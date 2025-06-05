@@ -3,65 +3,1145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introduction</title>
-</head>
-<body>
-    <b><h1><text-align><center>Kameshwaran B</center></text-align></h1></b>
-    <h2><text-align><center>Tech Enthusiast & Graphic Designer </center></text-align></h2>
-    <h3><text-align><center>Welcome to my intro page :)</center></text-align></h3>
+    <title>Professional Resume Formatter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body, table {
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary-color: #0f172a;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-accent: #eff6ff;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .template-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+        }
+
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .background-decoration::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 48px 32px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .auth-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 48px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+        }
+
+        .auth-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 32px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: var(--bg-primary);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: calc(100vh - 200px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-title i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--bg-accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 4px;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .template-selector {
+            margin: 24px 0;
+        }
+
+        .template-selector h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .template-card {
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            text-align: center;
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .template-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .template-card:hover::before,
+        .template-card.active::before {
+            transform: scaleX(1);
+        }
+
+        .template-card.active {
+            border-color: var(--primary-color);
+            background: var(--bg-accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .template-icon-gem {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin: 4px 0;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak .strength-fill {
+            width: 25%;
+            background: var(--error-color);
+        }
+
+        .strength-medium .strength-fill {
+            width: 50%;
+            background: var(--warning-color);
+        }
+
+        .strength-good .strength-fill {
+            width: 75%;
+            background: var(--success-color);
+        }
+
+        .strength-strong .strength-fill {
+            width: 100%;
+            background: var(--success-color);
+        }
+
+        .resume-preview {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 24px;
+            min-height: 700px;
+            box-shadow: var(--shadow-sm);
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .resume-header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .resume-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .resume-contact {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .resume-section {
+            margin-bottom: 28px;
+        }
+
+        .resume-section h3 {
+            color: var(--primary-color);
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 16px 0;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            color: var(--success-color);
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            color: var(--error-color);
+            border: 1px solid #fca5a5;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sample-resume-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 16px 0;
+        }
+
+        .sample-resume-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 16px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 32px 20px;
+            }
+
+            .auth-section {
+                padding: 32px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
-    <table border="1" width="100%" cellpadding="10" cellspacing="0">
-        <tr>
-            <td><b>Age:</b></td>
-            <td>17</td>
-        </tr>
-        <tr>
-            <td><b>Hobbies:</b></td>
-            <td>Robotics, Gaming, Coding, Poetry</td>
-        </tr>
-        <tr>
-            <td><b>Technical Skills:</b></td>
-            <td>Python (Basics), HTML (Basics), Adobe Photoshop, Adobe Premiere Pro </td>
-        </tr>
-        <tr>
-            <td><b>Socials:</b></td>
-            <td>Instagram - <a href="https://www.instagram.com/technomaniac._.143/">Technomaniac._.143</a></td>
-        </tr>
-    </table>
-    <br>
-    <style>
-    .resume-container {
-        display: flex;
-        align-items: flex-start;
-        gap: 30px;
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-    .resume-image {
-        width: 300px;
-        height: 300px;
-        object-fit: cover;
-        border-radius: 10px;
-        border: 2px solid #ccc;
-    }
-    .resume-info {
-        flex: 1;
-    }
-    </style>
-    <div class="resume-container">
-        <img src="https://lh3.googleusercontent.com/fife/ALs6j_GTHG6i4RtIsW2XIr55jlxOf8RUkl7kpw1ARdivPVjWjPDL2FDLX91y34BbPJifKH4YKEAaa1nY43KO9ASaExkUNi2ffQOdUEkITeoQ3cYUXV2MeZKNkACtcgfj6_tXz56TrTko5mRebehW3grN4onyembbFw4Vl-oQmlRo8-ZMngmd43tMd-r0LROLmu_l-U-9URkJfEG1LBwofAw_Y4SNV-acwj0rV_psJOezeBYj6C9vS5ZwqeC57zx7Hv1YPCP7qll8-nI8wCVcAy-u_neMS6z42XxblJp2ttKtrLobChys3339xIHwAR1U9qjH3696PSm_h2R583B3FFQKEW85TCyRi4nNc-Y8ANytLBvGFQLJzANCXgw5xZaJEEAmQJ3UhyS0HZvFeUPXCKce9KLlp_Y2kt676nmTRHEYTtPuXX25RW7spanle4U0CszVwkbi981vu4hSR3tj_38WpAwHMl2oekzqF3ACXYrXSKbZtReJFdC4VtjrjXqgbQ8MpMCOQumIWwllLRWnO0U4s9hSFjbPKveBfXnmwRDm0N9Lp1UQSMa46YH7P2EDxwYUAwSR5cI3w-rt8HtuVNpLTiSAPuko0RdYWkmLrAcTUQaBPR-37q4u6S-zPEvsgo6ReqRGadP_CV0T9BD7UEM_qWJE_PYpLt9n6xmbvTdd7rQyHRZSlebZgL7GywgYnciHvcG6hZ7i1PFxaYZYiME_AclrQffN12RRQLhHLnxUnslUVFpx054-QlLrXEloqN_8kGuXS00CwZweXTpxkb0p2LOzdO0jAptrjNKJ69Bfk-lcMo5PFg-NR153gtpLdMOl9gCbQ0tFO05NGPiNE0Vtf1uahZuONw51hOJ3aejB4YlV5vxt9rXlw-tBysBxtY-JvdRifwN4s8Mk68-qA44euditesqmb-7Px9enXbVDb2KXgPPtiypZSkofY3K-Qon46trXsHiM6MKPyb2ggMD6tLCj478EPYR0LLvQS7_llszwoes3D5Ee4_jO4O_OR3DBlweywU3YXEgjFjylTLRUZzGqxcQUuSzv50X7Ysraak9WSQYx-QaQsD1jEYYDBtZaeZWioKKJdKXic1ivUWqO3AEC7c5pUqaneGxNiHS8iamVsLPHkfoVoTHWg5n8JFvoAhw8Oe0ujBhkBqPQtV1gynaho5-jBU-qrPgOtin1YM_JnjMaJnX2N1i-aHTsQojXiYf_Dh8D93y_QbBGOPnBzMFVvaTKXoIsGg9e-WoYfhKHZPw14w7T32zSGk6uAhgmtSv9e_FwKFNLwTQtALNH2GUzUYRleTbopnnXW0ZEpuEP6GbP5McGRgTKNIIpa4YXi5jGtA-mSJOnEhp-Y0O6suoh9HpOs9iidnUbNXV9ZnKsXQ2rR2ZspjKdZ-sPdbIZVfmdiNduk4mGANVJ7vfYir9MIVCL98Rf4ktx9rH_lNArz8IQFScd_Qw3vfa9r_wuDrSH355JE97o_7RTHDo85eG9AzJjqt_1oo7c239un4ECgKFQFR4-ZQkvVYRLInpUpYrOScf7oNmWAyQ940_KoNuFqZ1kzwkP1HrdkZffJlmGrj-NjTPm7bizHeRQItXiT8M2ZjTMwpz5JWCjjKQM-RQ54ZT_kFVCcQ5wJ2Qv" alt="Kameshwaran B" class="resume-image">
-        <div class="resume-info">
-            
-                <p>
-                    I am a technology enthusiast with a strong passion for graphic design. I enjoy exploring emerging technologies and creating visually engaging content. My interests extend to robotics, gaming, coding, and poetry. Additionally, I have a keen interest in sports, with badminton being my favorite.
-                </p>
-        
+</head>
+<body>
+    <div class="background-decoration"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-file-alt"></i> Professional Resume Formatter</h1>
+            <p>Create exceptional resumes with our advanced formatting tools and AI-powered suggestions</p>
         </div>
-    </div></div>
 
+        <div id="authSection" class="auth-section">
+            <h2><i class="fas fa-user-shield"></i> Secure Access</h2>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+                <button class="auth-tab" onclick="switchTab('register')">Sign Up</button>
+            </div>
+
+            <div id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your professional email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Show or hide password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In to Resume Builder
+                </button>
+            </div>
+
+            <div id="registerForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your professional email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="registerPassword" placeholder="Create a strong password" required oninput="checkPasswordStrength()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="passwordStrength" class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <span id="strengthText">Password strength: Enter a password</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="register()">
+                    <i class="fas fa-user-plus"></i>
+                    Create Professional Account
+                </button>
+            </div>
+
+            <div id="alertContainer"></div>
+        </div>
+
+        <div id="mainApp" class="hidden">
+            <div class="main-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-edit"></i>
+                            Resume Builder
+                        </h2>
+                        <div class="user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userEmail"></span>
+                        </div>
+                    </div>
+
+                    <button class="sample-resume-btn" onclick="loadSampleResume()">
+                        <i class="fas fa-magic"></i>
+                        Load Sample Resume
+                    </button>
+
+                    <div class="template-selector">
+                        <h3><i class="fas fa-palette"></i> Choose Template</h3>
+                        <div class="template-grid">
+                            <div class="template-card active" onclick="selectTemplate('modern')">
+                                <i class="fas fa-laptop-code template-icon"></i>
+                                <h4>Modern Professional</h4>
+                                <p>Clean & Contemporary</p>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('classic')">
+                                <i class="fas fa-briefcase template-icon"></i>
+                                <h4>Classic Executive</h4>
+                                <p>Traditional & Formal</p>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('minimal')">
+                                <i class="fas fa-gem template-icon-gem"></i>
+                                <h4>Minimal Elegant</h4>
+                                <p>Simple & Sophisticated</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="resumeForm">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" placeholder="Enter your full professional name" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="professional.email@example.com" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 123-4567" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="address" placeholder="City, State, Country" oninput="updatePreview()">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-user-tie"></i> Professional Profile</h3>
+                            
+                            <div class="form-group">
+                                <label>Executive Summary</label>
+                                <textarea id="summary" rows="4" placeholder="Craft a compelling professional summary..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-briefcase"></i> Professional Experience</h3>
+                            
+                            <div class="form-group">
+                                <label>Work Experience</label>
+                                <textarea id="experience" rows="8" placeholder="Detail your professional experience..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-graduation-cap"></i> Education & Qualifications</h3>
+                            
+                            <div class="form-group">
+                                <label>Education</label>
+                                <textarea id="education" rows="4" placeholder="List your educational background..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-cogs"></i> Core Competencies</h3>
+                            
+                            <div class="form-group">
+                                <label>Technical Skills & Expertise</label>
+                                <textarea id="skills" rows="4" placeholder="List your technical skills and expertise..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-eye"></i>
+                            Live Preview
+                        </h2>
+                        <div class="export-section">
+                            <button class="btn btn-primary" onclick="exportPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                Export PDF
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportImage('png')">
+                                <i class="fas fa-image"></i>
+                                PNG
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="resumePreview" class="resume-preview">
+                        <div class="resume-header">
+                            <div class="resume-name">Your Professional Name</div>
+                            <div class="resume-contact">professional.email@example.com | +1 (555) 123-4567 | City, State, Country</div>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Executive Summary</h3>
+                            <p>Your compelling professional summary will appear here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Professional Experience</h3>
+                            <p>Your comprehensive work experience will be displayed here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Education & Qualifications</h3>
+                            <p>Your educational background will be shown here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Core Competencies</h3>
+                            <p>Your technical skills and expertise will be listed here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = 'modern';
+        let currentUser = null;
+        let users = []; // Simple in-memory storage instead of database
+
+        // Initialize the application
+        function init() {
+            // Initialize with demo data
+            users = [
+                {
+                    id: 1,
+                    name: 'Demo User',
+                    email: 'demo@example.com',
+                    password: 'demo123'
+                }
+            ];
+            // Check if there's a logged-in user in session storage
+            const storedUser = sessionStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userEmail').textContent = currentUser.email;
+            }
+        }
+
+        // Authentication functions
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginTab = document.querySelector('.auth-tab:first-child');
+            const registerTab = document.querySelector('.auth-tab:last-child'); // Fixed this line
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+            } else {
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+            }
+            document.getElementById('alertContainer').innerHTML = ''; // Clear alerts on tab switch
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userEmail').textContent = currentUser.email;
+                showAlert('success', 'Login successful! Welcome back.');
+            } else {
+                showAlert('error', 'Invalid email or password. Please try again.');
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!name || !email || !password || !confirmPassword) {
+                showAlert('error', 'All fields are required for registration.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('error', 'Passwords do not match.');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('error', 'Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (users.some(u => u.email === email)) {
+                showAlert('error', 'An account with this email already exists.');
+                return;
+            }
+
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                email: email,
+                password: password
+            };
+            users.push(newUser);
+            currentUser = newUser;
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userEmail').textContent = currentUser.email;
+            showAlert('success', 'Registration successful! Welcome to Resume Formatter.');
+        }
+
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000); // Alert disappears after 5 seconds
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const icon = input.nextElementSibling.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('registerPassword').value;
+            const strengthText = document.getElementById('strengthText');
+            const strengthFill = document.querySelector('.strength-fill');
+            const strengthBar = document.querySelector('.strength-bar');
+
+            let strength = 0;
+            if (password.length > 5) strength++;
+            if (password.length > 9) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            let strengthClass = '';
+            let text = '';
+            if (strength <= 2) {
+                strengthClass = 'strength-weak';
+                text = 'Password strength: Weak';
+            } else if (strength <= 4) {
+                strengthClass = 'strength-medium';
+                text = 'Password strength: Medium';
+            } else if (strength <= 5) {
+                strengthClass = 'strength-good';
+                text = 'Password strength: Good';
+            } else {
+                strengthClass = 'strength-strong';
+                text = 'Password strength: Strong';
+            }
+
+            strengthBar.className = `strength-bar ${strengthClass}`;
+            strengthText.textContent = text;
+        }
+
+        // Resume Builder functions
+        function loadSampleResume() {
+            document.getElementById('fullName').value = 'John Doe';
+            document.getElementById('email').value = 'john.doe@example.com';
+            document.getElementById('phone').value = '+1 (123) 456-7890';
+            document.getElementById('address').value = 'New York, NY, USA';
+            document.getElementById('summary').value = 'Highly motivated and results-oriented professional with 10+ years of experience in project management and team leadership. Proven ability to drive successful outcomes in fast-paced environments and deliver innovative solutions.';
+            document.getElementById('experience').value = `Senior Project Manager | Tech Solutions Inc. | 2020 - Present
+- Led cross-functional teams to deliver 5+ major software projects on time and within budget.
+- Implemented Agile methodologies, increasing team efficiency by 25%.
+- Managed stakeholder communications and resolved complex project issues.
+
+Project Manager | Global Innovations Ltd. | 2015 - 2020
+- Oversaw product development lifecycle from concept to launch for 3 key products.
+- Collaborated with engineering and marketing teams to define product roadmaps.
+- Achieved a 15% reduction in project costs through vendor negotiation.`;
+            document.getElementById('education').value = `Master of Business Administration (MBA) | University of Business | 2015
+Bachelor of Science in Computer Science | State University | 2013`;
+            document.getElementById('skills').value = `Project Management, Agile, Scrum, Waterfall, Leadership, Team Building, Strategic Planning, Budget Management, Risk Assessment, Software Development Life Cycle (SDLC), JIRA, Confluence, Microsoft Office Suite`;
+            updatePreview();
+            showAlert('success', 'Sample resume loaded successfully!');
+        }
+
+        function selectTemplate(template) {
+            currentTemplate = template;
+            const cards = document.querySelectorAll('.template-card');
+            cards.forEach(card => card.classList.remove('active'));
+            document.querySelector(`.template-card[onclick="selectTemplate('${template}')"]`).classList.add('active');
+            updatePreview(); // Re-render preview with new template styling if applicable
+        }
+
+        function updatePreview() {
+            const fullName = document.getElementById('fullName').value || 'Your Professional Name';
+            const email = document.getElementById('email').value || 'professional.email@example.com';
+            const phone = document.getElementById('phone').value || '+1 (555) 123-4567';
+            const address = document.getElementById('address').value || 'City, State, Country';
+            const summary = document.getElementById('summary').value || 'Your compelling professional summary will appear here...';
+            const experience = document.getElementById('experience').value || 'Your comprehensive work experience will be displayed here...';
+            const education = document.getElementById('education').value || 'Your educational background will be shown here...';
+            const skills = document.getElementById('skills').value || 'Your technical skills and expertise will be listed here...';
+
+            const preview = document.getElementById('resumePreview');
+            preview.innerHTML = `
+                <div class="resume-header">
+                    <div class="resume-name">${fullName}</div>
+                    <div class="resume-contact">${email} | ${phone} | ${address}</div>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Executive Summary</h3>
+                    <p>${summary.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Professional Experience</h3>
+                    <p>${experience.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Education & Qualifications</h3>
+                    <p>${education.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Core Competencies</h3>
+                    <p>${skills.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+            // Apply template-specific styling if any (currently handled by base CSS)
+        }
+
+        async function exportPDF() {
+            showAlert('success', 'Generating PDF...');
+            const { jsPDF } = window.jspdf;
+            const resumeContent = document.getElementById('resumePreview');
+
+            const canvas = await html2canvas(resumeContent, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210; 
+            const pageHeight = 297; 
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            pdf.save('resume.pdf');
+            showAlert('success', 'Resume exported as PDF successfully!');
+        }
+
+        async function exportImage(format) {
+            showAlert('success', `Generating ${format.toUpperCase()}...`);
+            const resumeContent = document.getElementById('resumePreview');
+            const canvas = await html2canvas(resumeContent, { scale: 2 });
+            const link = document.createElement('a');
+            link.download = `resume.${format}`;
+            if (format === 'png') {
+                link.href = canvas.toDataURL('image/png');
+            } else if (format === 'jpeg') {
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+            }
+            link.click();
+            showAlert('success', `Resume exported as ${format.toUpperCase()} successfully!`);
+        }
+
+        // Initialize the app when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+<!DOCTYPE html>
+<html lang="en">
 </body>
 </html>
