@@ -1,0 +1,636 @@
+:root {
+    /* Muted and formal color palette */
+    --primary-color: #2c3e50; /* Darker blue/grey for primary elements */
+    --primary-dark: #1a242f;
+    --primary-light: #4a6c8e;
+    --secondary-color: #7f8c8d; /* Muted grey for secondary text */
+    --accent-color: #3498db; /* A cleaner, less vibrant blue for accents */
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --text-primary: #2c3e50; /* Main text color */
+    --text-secondary: #7f8c8d;
+    --text-muted: #bdc3c7;
+    --bg-primary: #ffffff;
+    --bg-secondary: #fdfefe; /* Very subtle off-white */
+    --bg-tertiary: #ecf0f1; /* Light grey for subtle backgrounds */
+    --bg-accent: #f8fcfd; /* Very light blue for accent areas */
+    --border-color: #dfe6e9; /* Lighter, subtle borders */
+    --border-light: #edeff0;
+    
+    /* Subtler shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+    
+    /* Removed gradients for a flatter, minimalistic look */
+    --gradient-primary: none;
+    --gradient-secondary: none;
+    --gradient-accent: none;
+}
+
+/* Base styles for a clean slate */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-secondary); /* Uniform, very light background */
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex; /* Using flexbox for better centering */
+    justify-content: center;
+    align-items: flex-start; /* Align items to the start, not center vertically */
+    padding: 40px 0; /* Add some top/bottom padding */
+}
+
+/* Removed background decoration for minimalism */
+.background-decoration {
+    display: none;
+}
+
+.container {
+    max-width: 1200px; /* Slightly narrower for a more focused layout */
+    margin: 0 auto;
+    padding: 0 24px; /* Maintain horizontal padding */
+    position: relative;
+    width: 100%; /* Ensure it takes full width within max-width */
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 48px;
+    background: var(--bg-primary); /* Solid white background */
+    /* Removed backdrop-filter for simplicity */
+    padding: 40px 32px; /* Slightly reduced padding */
+    border-radius: 12px; /* Less rounded corners for formality */
+    box-shadow: var(--shadow-md); /* Subtler shadow */
+    border: 1px solid var(--border-color); /* Clear border */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top border for header */
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px; /* Thinner border */
+    background: var(--primary-color); /* Solid primary color */
+}
+
+.header h1 {
+    font-size: 2.5rem; /* Slightly smaller, more refined */
+    font-weight: 700;
+    margin-bottom: 12px; /* Reduced margin */
+    color: var(--primary-color); /* Solid color instead of gradient */
+    -webkit-background-clip: unset; /* Remove webkit specific properties */
+    -webkit-text-fill-color: unset; /* Remove webkit specific properties */
+    background-clip: unset; /* Remove background clip */
+    letter-spacing: -0.01em; /* Less aggressive letter spacing */
+}
+
+.header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem; /* Slightly smaller */
+    font-weight: 400;
+    max-width: 550px; /* A bit narrower */
+    margin: 0 auto;
+}
+
+.auth-section {
+    background: var(--bg-primary); /* Solid white background */
+    /* Removed backdrop-filter */
+    border-radius: 12px; /* Less rounded */
+    padding: 40px; /* Reduced padding */
+    margin-bottom: 48px;
+    box-shadow: var(--shadow-md); /* Subtler shadow */
+    border: 1px solid var(--border-color);
+    text-align: center;
+    max-width: 420px; /* Slightly narrower for a more compact form */
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top border for auth section */
+.auth-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-color); /* Accent color */
+}
+
+.auth-section h2 {
+    font-size: 1.8rem; /* Slightly smaller */
+    font-weight: 600;
+    margin-bottom: 28px; /* Reduced margin */
+    color: var(--text-primary);
+}
+
+.auth-tabs {
+    display: flex;
+    background: var(--bg-tertiary); /* Light grey background */
+    border-radius: 8px; /* Less rounded */
+    padding: 3px; /* Thinner padding */
+    margin-bottom: 28px; /* Reduced margin */
+    border: 1px solid var(--border-color); /* Added border */
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px 14px; /* Reduced padding */
+    border: none;
+    background: transparent;
+    border-radius: 6px; /* Less rounded */
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s ease; /* Faster, subtler transition */
+    font-size: 0.95rem; /* Slightly smaller font */
+}
+
+.auth-tab.active {
+    background: var(--bg-primary);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.panel {
+    background: var(--bg-primary); /* Solid white background */
+    /* Removed backdrop-filter */
+    border-radius: 12px; /* Less rounded */
+    padding: 32px;
+    box-shadow: var(--shadow-md); /* Subtler shadow */
+    border: 1px solid var(--border-color);
+    min-height: calc(100vh - 200px); /* Keep for layout integrity */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top border for panels */
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px; /* Reduced margin */
+    padding-bottom: 14px; /* Reduced padding */
+    border-bottom: 1px solid var(--border-light); /* Thinner, lighter border */
+}
+
+.panel-title {
+    font-size: 1.3rem; /* Slightly smaller */
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Reduced gap */
+}
+
+.panel-title i {
+    color: var(--primary-color);
+    font-size: 1.1rem; /* Slightly smaller icon */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Reduced gap */
+    color: var(--text-secondary);
+    font-size: 13px; /* Slightly smaller font */
+    font-weight: 500;
+    background: var(--bg-tertiary); /* Lighter background */
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 16px; /* Slightly less rounded */
+    border: 1px solid var(--border-light); /* Added subtle border */
+}
+
+.btn {
+    padding: 10px 20px; /* Reduced padding */
+    border: 1px solid var(--border-color); /* Clearer, subtle border */
+    border-radius: 8px; /* Less rounded */
+    cursor: pointer;
+    font-size: 13px; /* Slightly smaller font */
+    font-weight: 500;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px;
+    transition: all 0.2s ease; /* Faster, subtler transition */
+    min-height: 40px; /* Slightly smaller min-height */
+    position: relative;
+    overflow: hidden; /* Keep for button ripple/shine effect if any */
+}
+
+/* Removed the elaborate ::before animation for a cleaner look */
+.btn::before {
+    display: none;
+}
+
+.btn-primary {
+    background: var(--primary-color); /* Solid primary color */
+    color: white;
+    border-color: var(--primary-dark); /* Darker border for depth */
+    box-shadow: var(--shadow-sm); /* Subtler shadow */
+}
+
+.btn-secondary {
+    background: var(--accent-color); /* Solid accent color */
+    color: white;
+    border-color: darken(var(--accent-color), 10%); /* Darker accent border */
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-success {
+    background: var(--success-color);
+    color: white;
+    border-color: darken(var(--success-color), 10%);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn:hover {
+    transform: translateY(-1px); /* Subtler hover effect */
+    box-shadow: var(--shadow-md); /* Slightly more prominent shadow on hover */
+    background: var(--bg-tertiary); /* Light background for outlines on hover */
+    color: var(--text-primary);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-success:hover {
+    filter: brightness(1.1); /* Simple brightness increase for solid buttons */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+
+.btn-block {
+    width: 100%;
+}
+
+.template-selector {
+    margin: 24px 0;
+}
+
+.template-selector h3 {
+    font-size: 1.05rem; /* Slightly smaller */
+    font-weight: 600;
+    margin-bottom: 14px; /* Reduced margin */
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Slightly smaller min width */
+    gap: 12px; /* Reduced gap */
+}
+
+.template-card {
+    border: 1px solid var(--border-color); /* Thinner border */
+    border-radius: 8px; /* Less rounded */
+    padding: 20px; /* Reduced padding */
+    cursor: pointer;
+    text-align: center;
+    background: var(--bg-primary);
+    transition: all 0.2s ease; /* Faster, subtler transition */
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm); /* Added subtle shadow */
+}
+
+/* Removed the elaborate ::before animation for a cleaner look */
+.template-card::before {
+    display: none;
+}
+
+.template-card:hover {
+    border-color: var(--accent-color); /* Accent color on hover */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px); /* Subtler hover effect */
+}
+
+.template-card.active {
+    border-color: var(--primary-color);
+    background: var(--bg-accent); /* Lighter accent background */
+    box-shadow: var(--shadow-md);
+}
+
+.template-icon,
+.template-icon-gem {
+    font-size: 1.8rem; /* Smaller icon size */
+    color: var(--primary-color);
+    margin-bottom: 8px; /* Reduced margin */
+}
+
+.template-card h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.template-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.form-section {
+    margin-bottom: 32px;
+}
+
+.form-section h3 {
+    font-size: 1.2rem; /* Slightly smaller */
+    font-weight: 600;
+    margin-bottom: 20px; /* Reduced margin */
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light); /* Subtle border for sections */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Reduced margin */
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px; /* Reduced margin */
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px; /* Slightly smaller font */
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px; /* Reduced padding */
+    border: 1px solid var(--border-color); /* Thinner border */
+    border-radius: 8px; /* Less rounded */
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s ease; /* Faster, subtler transition */
+    background: var(--bg-primary);
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color); /* Accent color on focus */
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); /* Subtler shadow */
+    transform: none; /* No translateY on focus */
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px; /* Adjusted position */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 14px; /* Slightly smaller icon */
+    padding: 3px; /* Reduced padding */
+    border-radius: 3px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--accent-color);
+}
+
+.password-strength {
+    margin-top: 6px; /* Reduced margin */
+    font-size: 11px; /* Smaller font */
+    color: var(--text-secondary); /* Default text color */
+}
+
+.strength-bar {
+    height: 3px; /* Thinner bar */
+    background: var(--border-light); /* Lighter background */
+    border-radius: 2px;
+    margin: 3px 0; /* Reduced margin */
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Keep strength colors, as they convey essential info */
+.strength-weak .strength-fill {
+    width: 25%;
+    background: var(--error-color);
+}
+
+.strength-medium .strength-fill {
+    width: 50%;
+    background: var(--warning-color);
+}
+
+.strength-good .strength-fill {
+    width: 75%;
+    background: var(--success-color);
+}
+
+.strength-strong .strength-fill {
+    width: 100%;
+    background: var(--success-color);
+}
+
+.resume-preview {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px; /* Less rounded */
+    padding: 30px; /* Reduced padding for a tighter look */
+    margin-top: 24px;
+    min-height: 700px;
+    box-shadow: var(--shadow-sm);
+    font-size: 13.5px; /* Slightly smaller base font size for density */
+    line-height: 1.5; /* Adjusted line height */
+    position: relative;
+    color: #34495e; /* A standard dark grey for resume content */
+}
+
+.resume-header {
+    text-align: center;
+    border-bottom: 1px solid var(--border-light); /* Thinner, lighter border */
+    padding-bottom: 20px; /* Reduced padding */
+    margin-bottom: 28px; /* Reduced margin */
+}
+
+.resume-name {
+    font-size: 2.2rem; /* Slightly smaller */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 6px; /* Reduced margin */
+    letter-spacing: -0.01em;
+}
+
+.resume-contact {
+    color: var(--text-secondary);
+    font-size: 13px; /* Slightly smaller */
+    font-weight: 500;
+}
+
+.resume-section {
+    margin-bottom: 24px; /* Reduced margin */
+}
+
+.resume-section h3 {
+    color: var(--primary-color);
+    font-size: 1.05rem; /* Slightly smaller */
+    font-weight: 600;
+    margin-bottom: 10px; /* Reduced margin */
+    border-bottom: 1px solid var(--border-light); /* Thinner border */
+    padding-bottom: 3px; /* Reduced padding */
+    text-transform: uppercase;
+    letter-spacing: 0.04em; /* Slightly tighter letter spacing */
+}
+
+.resume-section p {
+    margin-bottom: 8px; /* Spacing between paragraphs */
+}
+
+.hidden {
+    display: none;
+}
+
+.alert {
+    padding: 12px 16px; /* Reduced padding */
+    border-radius: 8px; /* Less rounded */
+    margin: 12px 0; /* Reduced margin */
+    font-size: 13px; /* Slightly smaller font */
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease;
+    border: 1px solid; /* Solid border for clarity */
+}
+
+.alert-success {
+    background: #e6f7ed; /* Lighter background */
+    color: var(--success-color);
+    border-color: #b7e3c9;
+}
+
+.alert-error {
+    background: #fdf0ef; /* Lighter background */
+    color: var(--error-color);
+    border-color: #f7b7b7;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px); /* Subtler animation */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sample-resume-btn {
+    background: var(--accent-color); /* Solid accent color */
+    color: white;
+    border: 1px solid darken(var(--accent-color), 10%);
+    padding: 10px 20px; /* Reduced padding */
+    border-radius: 8px; /* Less rounded */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 16px 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.sample-resume-btn:hover {
+    transform: translateY(-1px); /* Subtler hover */
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.1);
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 16px;
+    }
+
+    .panel {
+        padding: 20px;
+    }
+
+    .header {
+        padding: 32px 20px;
+    }
+
+    .auth-section {
+        padding: 32px 20px;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .panel-title {
+        font-size: 1.2rem;
+    }
+}
