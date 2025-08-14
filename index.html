@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Formatter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="background-decoration"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-file-alt"></i> Professional Resume Formatter</h1>
+            <p>Create exceptional resumes with our advanced formatting tools and AI-powered suggestions</p>
+        </div>
+
+        <div id="authSection" class="auth-section">
+            <h2><i class="fas fa-user-shield"></i> Secure Access</h2>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+                <button class="auth-tab" onclick="switchTab('register')">Sign Up</button>
+            </div>
+
+            <div id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your professional email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Show or hide password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In to Resume Builder
+                </button>
+            </div>
+
+            <div id="registerForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your professional email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="registerPassword" placeholder="Create a strong password" required oninput="checkPasswordStrength()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Show or hide password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="passwordStrength" class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <span id="strengthText">Password strength: Enter a password</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')" aria-label="Show or hide password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="register()">
+                    <i class="fas fa-user-plus"></i>
+                    Create Professional Account
+                </button>
+            </div>
+
+            <div id="alertContainer"></div>
+        </div>
+
+        <div id="mainApp" class="hidden">
+            <div class="main-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-edit"></i>
+                            Resume Builder
+                        </h2>
+                        <div class="user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userEmail"></span>
+                        </div>
+                    </div>
+
+                    <button class="sample-resume-btn" onclick="loadSampleResume()">
+                        <i class="fas fa-magic"></i>
+                        Load Sample Resume
+                    </button>
+
+                    <div class="template-selector">
+                        <h3><i class="fas fa-palette"></i> Choose Template</h3>
+                        <div class="template-grid">
+                            <div class="template-card active" onclick="selectTemplate('modern')">
+                                <i class="fas fa-laptop-code template-icon"></i>
+                                <h4>Modern Professional</h4>
+                                <p>Clean & Contemporary</p>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('classic')">
+                                <i class="fas fa-briefcase template-icon"></i>
+                                <h4>Classic Executive</h4>
+                                <p>Traditional & Formal</p>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('minimal')">
+                                <i class="fas fa-gem template-icon-gem"></i>
+                                <h4>Minimal Elegant</h4>
+                                <p>Simple & Sophisticated</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="resumeForm">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" placeholder="Enter your full professional name" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="professional.email@example.com" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 123-4567" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="address" placeholder="City, State, Country" oninput="updatePreview()">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-user-tie"></i> Professional Profile</h3>
+                            
+                            <div class="form-group">
+                                <label>Executive Summary</label>
+                                <textarea id="summary" rows="4" placeholder="Craft a compelling professional summary..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-briefcase"></i> Professional Experience</h3>
+                            
+                            <div class="form-group">
+                                <label>Work Experience</label>
+                                <textarea id="experience" rows="8" placeholder="Detail your professional experience..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-graduation-cap"></i> Education & Qualifications</h3>
+                            
+                            <div class="form-group">
+                                <label>Education</label>
+                                <textarea id="education" rows="4" placeholder="List your educational background..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-cogs"></i> Core Competencies</h3>
+                            
+                            <div class="form-group">
+                                <label>Technical Skills & Expertise</label>
+                                <textarea id="skills" rows="4" placeholder="List your technical skills and expertise..." oninput="updatePreview()"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="fas fa-eye"></i>
+                            Live Preview
+                        </h2>
+                        <div class="export-section">
+                            <button class="btn btn-primary" onclick="exportPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                Export PDF
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportImage('png')">
+                                <i class="fas fa-image"></i>
+                                PNG
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="resumePreview" class="resume-preview">
+                        <div class="resume-header">
+                            <div class="resume-name">Your Professional Name</div>
+                            <div class="resume-contact">professional.email@example.com | +1 (555) 123-4567 | City, State, Country</div>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Executive Summary</h3>
+                            <p>Your compelling professional summary will appear here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Professional Experience</h3>
+                            <p>Your comprehensive work experience will be displayed here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Education & Qualifications</h3>
+                            <p>Your educational background will be shown here...</p>
+                        </div>
+
+                        <div class="resume-section">
+                            <h3>Core Competencies</h3>
+                            <p>Your technical skills and expertise will be listed here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = 'modern';
+        let currentUser = null;
+        let users = []; // Simple in-memory storage instead of database
+
+        // Initialize the application
+        function init() {
+            // Initialize with demo data
+            users = [
+                {
+                    id: 1,
+                    name: 'Demo User',
+                    email: 'demo@example.com',
+                    password: 'demo123'
+                }
+            ];
+            // Check if there's a logged-in user in session storage
+            const storedUser = sessionStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userEmail').textContent = currentUser.email;
+            }
+        }
+
+        // Authentication functions
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginTab = document.querySelector('.auth-tab:first-child');
+            const registerTab = document.querySelector('.auth-tab:last-child'); // Fixed this line
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+            } else {
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+            }
+            document.getElementById('alertContainer').innerHTML = ''; // Clear alerts on tab switch
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userEmail').textContent = currentUser.email;
+                showAlert('success', 'Login successful! Welcome back.');
+            } else {
+                showAlert('error', 'Invalid email or password. Please try again.');
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!name || !email || !password || !confirmPassword) {
+                showAlert('error', 'All fields are required for registration.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('error', 'Passwords do not match.');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('error', 'Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (users.some(u => u.email === email)) {
+                showAlert('error', 'An account with this email already exists.');
+                return;
+            }
+
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                email: email,
+                password: password
+            };
+            users.push(newUser);
+            currentUser = newUser;
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userEmail').textContent = currentUser.email;
+            showAlert('success', 'Registration successful! Welcome to Resume Formatter.');
+        }
+
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000); // Alert disappears after 5 seconds
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const icon = input.nextElementSibling.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('registerPassword').value;
+            const strengthText = document.getElementById('strengthText');
+            const strengthFill = document.querySelector('.strength-fill');
+            const strengthBar = document.querySelector('.strength-bar');
+
+            let strength = 0;
+            if (password.length > 5) strength++;
+            if (password.length > 9) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            let strengthClass = '';
+            let text = '';
+            if (strength <= 2) {
+                strengthClass = 'strength-weak';
+                text = 'Password strength: Weak';
+            } else if (strength <= 4) {
+                strengthClass = 'strength-medium';
+                text = 'Password strength: Medium';
+            } else if (strength <= 5) {
+                strengthClass = 'strength-good';
+                text = 'Password strength: Good';
+            } else {
+                strengthClass = 'strength-strong';
+                text = 'Password strength: Strong';
+            }
+
+            strengthBar.className = `strength-bar ${strengthClass}`;
+            strengthText.textContent = text;
+        }
+
+        // Resume Builder functions
+        function loadSampleResume() {
+            document.getElementById('fullName').value = 'John Doe';
+            document.getElementById('email').value = 'john.doe@example.com';
+            document.getElementById('phone').value = '+1 (123) 456-7890';
+            document.getElementById('address').value = 'New York, NY, USA';
+            document.getElementById('summary').value = 'Highly motivated and results-oriented professional with 10+ years of experience in project management and team leadership. Proven ability to drive successful outcomes in fast-paced environments and deliver innovative solutions.';
+            document.getElementById('experience').value = `Senior Project Manager | Tech Solutions Inc. | 2020 - Present
+- Led cross-functional teams to deliver 5+ major software projects on time and within budget.
+- Implemented Agile methodologies, increasing team efficiency by 25%.
+- Managed stakeholder communications and resolved complex project issues.
+
+Project Manager | Global Innovations Ltd. | 2015 - 2020
+- Oversaw product development lifecycle from concept to launch for 3 key products.
+- Collaborated with engineering and marketing teams to define product roadmaps.
+- Achieved a 15% reduction in project costs through vendor negotiation.`;
+            document.getElementById('education').value = `Master of Business Administration (MBA) | University of Business | 2015
+Bachelor of Science in Computer Science | State University | 2013`;
+            document.getElementById('skills').value = `Project Management, Agile, Scrum, Waterfall, Leadership, Team Building, Strategic Planning, Budget Management, Risk Assessment, Software Development Life Cycle (SDLC), JIRA, Confluence, Microsoft Office Suite`;
+            updatePreview();
+            showAlert('success', 'Sample resume loaded successfully!');
+        }
+
+        function selectTemplate(template) {
+            currentTemplate = template;
+            const cards = document.querySelectorAll('.template-card');
+            cards.forEach(card => card.classList.remove('active'));
+            document.querySelector(`.template-card[onclick="selectTemplate('${template}')"]`).classList.add('active');
+            updatePreview(); // Re-render preview with new template styling if applicable
+        }
+
+        function updatePreview() {
+            const fullName = document.getElementById('fullName').value || 'Your Professional Name';
+            const email = document.getElementById('email').value || 'professional.email@example.com';
+            const phone = document.getElementById('phone').value || '+1 (555) 123-4567';
+            const address = document.getElementById('address').value || 'City, State, Country';
+            const summary = document.getElementById('summary').value || 'Your compelling professional summary will appear here...';
+            const experience = document.getElementById('experience').value || 'Your comprehensive work experience will be displayed here...';
+            const education = document.getElementById('education').value || 'Your educational background will be shown here...';
+            const skills = document.getElementById('skills').value || 'Your technical skills and expertise will be listed here...';
+
+            const preview = document.getElementById('resumePreview');
+            preview.innerHTML = `
+                <div class="resume-header">
+                    <div class="resume-name">${fullName}</div>
+                    <div class="resume-contact">${email} | ${phone} | ${address}</div>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Executive Summary</h3>
+                    <p>${summary.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Professional Experience</h3>
+                    <p>${experience.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Education & Qualifications</h3>
+                    <p>${education.replace(/\n/g, '<br>')}</p>
+                </div>
+
+                <div class="resume-section">
+                    <h3>Core Competencies</h3>
+                    <p>${skills.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+            // Apply template-specific styling if any (currently handled by base CSS)
+        }
+
+        async function exportPDF() {
+            showAlert('success', 'Generating PDF...');
+            const { jsPDF } = window.jspdf;
+            const resumeContent = document.getElementById('resumePreview');
+
+            const canvas = await html2canvas(resumeContent, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210; 
+            const pageHeight = 297; 
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            pdf.save('resume.pdf');
+            showAlert('success', 'Resume exported as PDF successfully!');
+        }
+
+        async function exportImage(format) {
+            showAlert('success', `Generating ${format.toUpperCase()}...`);
+            const resumeContent = document.getElementById('resumePreview');
+            const canvas = await html2canvas(resumeContent, { scale: 2 });
+            const link = document.createElement('a');
+            link.download = `resume.${format}`;
+            if (format === 'png') {
+                link.href = canvas.toDataURL('image/png');
+            } else if (format === 'jpeg') {
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+            }
+            link.click();
+            showAlert('success', `Resume exported as ${format.toUpperCase()} successfully!`);
+        }
+
+        // Initialize the app when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
